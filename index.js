@@ -236,6 +236,18 @@ function animate() {
       clearInterval(intervalId);
       final.innerHTML = score;
       modalEl.style.display = "block";
+      gsap.fromTo(
+        "#modalEl",
+        {
+          scale: 0.8,
+          opacity: 0,
+        },
+        {
+          scale: 1,
+          opacity: 1,
+          ease: "expo.out",
+        }
+      );
     }
 
     for (
@@ -320,12 +332,28 @@ restart.addEventListener("click", () => {
   init();
   animate();
   spawnEnemies();
-  modalEl.style.display = "none";
+  gsap.to("#modalEl", {
+    opacity: 0,
+    scale: 0.8,
+    duration: 0.3,
+    ease: "expo.in",
+    onComplete: () => {
+      modalEl.style.display = "none";
+    },
+  });
 });
 
 start.addEventListener("click", () => {
-  startEl.style.display = "none";
   init();
   animate();
   spawnEnemies();
+  gsap.to("#startEl", {
+    opacity: 0,
+    scale: 0.8,
+    duration: 0.3,
+    ease: "expo.in",
+    onComplete: () => {
+      startEl.style.display = "none";
+    },
+  });
 });
