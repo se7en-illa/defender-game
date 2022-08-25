@@ -1,0 +1,97 @@
+@font-face {
+  font-family: "pricedownblack";
+  src: url("font/pricedown_bl-webfont.woff2") format("woff2"),
+    url("font/pricedown_bl-webfont.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+* {
+  font-family: pricedownblack;
+}
+
+body {
+  margin: 0px;
+  background-color: black;
+}
+
+.score {
+  color: white;
+  margin-left: 15px;
+  margin-top: 5px;
+  font-size: 40px;
+  font-family: pricedownblack;
+  position: absolute;
+  user-select: none;
+}
+
+.startgame {
+  display: "block";
+  position: absolute;
+  background-color: white;
+  border-radius: 40px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 500px;
+  text-align: center;
+  width: 100%;
+  padding-bottom: 40px;
+  user-select: none;
+}
+
+.gamename {
+  font-size: 50px;
+  color: darkblue;
+}
+
+.start {
+  font-size: 30px;
+  margin-top: 10px;
+  padding: 10px 10px;
+  border-radius: 10px;
+  border: none;
+  color: white;
+  background-color: blueviolet;
+  cursor: pointer;
+}
+
+.gameover {
+  display: none;
+  position: absolute;
+  background-color: white;
+  border-radius: 40px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 500px;
+  text-align: center;
+  width: 100%;
+  padding-bottom: 40px;
+  user-select: none;
+}
+
+.game {
+  font-size: 60px;
+  color: red;
+}
+
+p {
+  font-size: 30px;
+}
+
+#final {
+  font-size: 50px;
+  color: darkred;
+}
+
+.restart {
+  font-size: 20px;
+  margin-top: 10px;
+  padding: 10px 10px;
+  border-radius: 10px;
+  border: none;
+  color: white;
+  background-color: blueviolet;
+  cursor: pointer;
+}

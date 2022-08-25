@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="style.css" />
+
+    <title>CANVAS GAME</title>
+  </head>
+  <body>
+    <div class="score">
+      <span> Score: <span id="score">0</span></span>
+    </div>
+    <div class="startgame" id="startEl">
+      <h1 class="gamename">
+        Defend the Little <br />
+        Circle Thingy!!!
+      </h1>
+      <br />
+      <button class="start" id="start">START GAME</button>
+    </div>
+    <div class="gameover" id="modalEl">
+      <h1 class="game">Game Over</h1>
+      <p>Final Score:</p>
+      <span id="final">0</span>
+      <br />
+      <button class="restart" id="restart">RESTART GAME</button>
+    </div>
+    <canvas></canvas>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.0/gsap.min.js"
+      integrity="sha512-GQ5/eIhs41UXpG6fGo4xQBpwSEj9RrBvMuKyE2h/2vw3a9x85T1Bt0JglOUVJJLeyIUl/S/kCdDXlE/n7zCjIg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script src="index.js"></script>
+  </body>
+</html>
