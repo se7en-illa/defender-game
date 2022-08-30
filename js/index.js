@@ -515,5 +515,16 @@ window.addEventListener("touchstart", (event) => {
   const x = event.touches[0].clientX;
   const y = event.touches[0].clientY;
 
+  mouse.x = x;
+  mouse.y = y;
+
   shoot({ x, y });
+});
+
+window.addEventListener("touchmove", (event) => {
+  const x = event.touches[0].clientX;
+  const y = event.touches[0].clientY;
+
+  mouse.x = x;
+  mouse.y = y;
 });
