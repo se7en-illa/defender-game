@@ -8,6 +8,7 @@
 
 * {
   font-family: pricedownblack;
+  touch-action: none;
 }
 
 body {
