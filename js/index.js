@@ -6,6 +6,8 @@ const final = document.querySelector("#final");
 const restart = document.querySelector("#restart");
 const start = document.querySelector("#start");
 const startEl = document.querySelector("#startEl");
+const volumeUp = document.querySelector("#volumeUp");
+const volumeOff = document.querySelector("#mute");
 
 canvas.width = innerWidth;
 canvas.height = innerHeight;
@@ -374,7 +376,14 @@ function animate() {
 //
 //
 
-addEventListener("click", (event) => {
+let audioInitialized = false;
+
+window.addEventListener("click", (event) => {
+  if (!audio.background.playing() && !audioInitialized) {
+    audio.background.play();
+    audioInitialized = true;
+  }
+
   if (game.active === true) {
     const angle = Math.atan2(
       event.clientY - player.y,
@@ -389,6 +398,30 @@ addEventListener("click", (event) => {
     projectiles.push(new Projectile(player.x, player.y, 5, "white", velocity));
 
     audio.shoot.play();
+  }
+});
+
+//mute everything
+volumeUp.addEventListener("click", () => {
+  audio.background.pause();
+  volumeOff.style.display = "block";
+  volumeUp.style.display = "none";
+
+  for (let key in audio) {
+    audio[key].mute(true);
+  }
+});
+
+//volume up everything
+volumeOff.addEventListener("click", () => {
+  if (audioInitialized) {
+    audio.background.play();
+    volumeOff.style.display = "none";
+    volumeUp.style.display = "block";
+
+    for (let key in audio) {
+      audio[key].mute(false);
+    }
   }
 });
 

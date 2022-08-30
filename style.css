@@ -95,3 +95,27 @@ p {
   background-color: blueviolet;
   cursor: pointer;
 }
+
+.volup {
+  display: block;
+  color: white;
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.mute {
+  display: none;
+  color: white;
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  padding: 10px;
+  cursor: pointer;
+}
