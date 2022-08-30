@@ -49,6 +49,9 @@ let powerUps = [];
 let frames = 0;
 let spawnPowerUpsId;
 let backgroundParticles = [];
+let game = {
+  active: false,
+};
 
 function init() {
   player = new Player(x, y, 10, "white");
@@ -61,6 +64,9 @@ function init() {
   scoreEl.innerHTML = score;
   frames = 0;
   backgroundParticles = [];
+  game = {
+    active: true,
+  };
 
   for (let x = 0; x < canvas.width + 60; x += 60) {
     for (let y = 0; y < canvas.height + 60; y += 60) {
@@ -191,6 +197,7 @@ function animate() {
       powerUps.splice(i, 1);
       player.powerUp = "MachineGun";
       player.color = "purple";
+      audio.powerUp.play();
       setTimeout(() => {
         player.powerUp = null;
         player.color = "white";
@@ -211,6 +218,10 @@ function animate() {
       projectiles.push(
         new Projectile(player.x, player.y, 5, "purple", velocity)
       );
+    }
+
+    if (frames % 8 === 0) {
+      audio.shoot.play();
     }
   }
 
@@ -247,6 +258,8 @@ function animate() {
     const dist = Math.hypot(player.x - enemy.x, player.y - enemy.y);
     //endgame
     if (dist - enemy.radius - player.radius < 1) {
+      audio.death.play();
+      game.active = false;
       cancelAnimationFrame(animationId);
       clearInterval(intervalId);
       final.innerHTML = score;
@@ -293,6 +306,7 @@ function animate() {
         }
         //this is where we shrink our enemy
         if (enemy.radius - 10 > 5) {
+          audio.damage.play();
           score += 100;
           scoreEl.innerHTML = score;
           gsap.to(enemy, {
@@ -307,6 +321,7 @@ function animate() {
           });
           projectiles.splice(projectileIdx, 1);
         } else {
+          audio.explode.play();
           score += 150;
           scoreEl.innerHTML = score;
           createScoreLabel({
@@ -360,14 +375,21 @@ function animate() {
 //
 
 addEventListener("click", (event) => {
-  const angle = Math.atan2(event.clientY - player.y, event.clientX - player.x);
+  if (game.active === true) {
+    const angle = Math.atan2(
+      event.clientY - player.y,
+      event.clientX - player.x
+    );
 
-  const velocity = {
-    x: Math.cos(angle) * 5,
-    y: Math.sin(angle) * 5,
-  };
+    const velocity = {
+      x: Math.cos(angle) * 5,
+      y: Math.sin(angle) * 5,
+    };
 
-  projectiles.push(new Projectile(player.x, player.y, 5, "white", velocity));
+    projectiles.push(new Projectile(player.x, player.y, 5, "white", velocity));
+
+    audio.shoot.play();
+  }
 });
 
 const mouse = {
@@ -381,6 +403,7 @@ addEventListener("mousemove", (event) => {
 });
 
 restart.addEventListener("click", () => {
+  audio.select.play();
   init();
   animate();
   spawnEnemies();
@@ -397,6 +420,7 @@ restart.addEventListener("click", () => {
 });
 
 start.addEventListener("click", () => {
+  audio.select.play();
   init();
   animate();
   spawnEnemies();
