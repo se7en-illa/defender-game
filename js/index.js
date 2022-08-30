@@ -56,6 +56,9 @@ let game = {
 };
 
 function init() {
+  const x = canvas.width / 2;
+  const y = canvas.height / 2;
+
   player = new Player(x, y, 10, "white");
   projectiles = [];
   enemies = [];
@@ -70,8 +73,8 @@ function init() {
     active: true,
   };
 
-  for (let x = 0; x < canvas.width + 60; x += 60) {
-    for (let y = 0; y < canvas.height + 60; y += 60) {
+  for (let x = 0; x < canvas.width + 50; x += 50) {
+    for (let y = 0; y < canvas.height + 50; y += 50) {
       backgroundParticles.push(
         new BackgroundParticle({
           position: {
@@ -497,4 +500,11 @@ window.addEventListener("keydown", (event) => {
       player.velocity.y += 1;
       break;
   }
+});
+
+window.addEventListener("resize", () => {
+  canvas.width = innerWidth;
+  canvas.height = innerHeight;
+
+  init();
 });
