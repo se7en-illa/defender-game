@@ -115,6 +115,25 @@ class Particle {
   }
 }
 
+class BackgroundParticle {
+  constructor({ position, radius = 3, color = "blue" }) {
+    this.position = position;
+    this.radius = radius;
+    this.color = color;
+    this.alpha = 0.1;
+  }
+
+  draw() {
+    c.save();
+    c.globalAlpha = this.alpha;
+    c.beginPath();
+    c.arc(this.position.x, this.position.y, this.radius, 0, Math.PI * 2);
+    c.fillStyle = this.color;
+    c.fill();
+    c.restore();
+  }
+}
+
 class Player {
   constructor(x, y, radius, color) {
     this.x = x;
@@ -187,20 +206,6 @@ class Projectile {
     this.y = this.y + this.velocity.y;
   }
 }
-
-//
-//
-//    /$$$$$$   /$$$$$$  /$$  /$$  /$$  /$$$$$$   /$$$$$$  /$$   /$$  /$$$$$$   /$$$$$$$
-//   /$$__  $$ /$$__  $$| $$ | $$ | $$ /$$__  $$ /$$__  $$| $$  | $$ /$$__  $$ /$$_____/
-//  | $$  \ $$| $$  \ $$| $$ | $$ | $$| $$$$$$$$| $$  \__/| $$  | $$| $$  \ $$|  $$$$$$
-//  | $$  | $$| $$  | $$| $$ | $$ | $$| $$_____/| $$      | $$  | $$| $$  | $$ \____  $$
-//  | $$$$$$$/|  $$$$$$/|  $$$$$/$$$$/|  $$$$$$$| $$      |  $$$$$$/| $$$$$$$/ /$$$$$$$/
-//  | $$____/  \______/  \_____/\___/  \_______/|__/       \______/ | $$____/ |_______/
-//  | $$                                                            | $$
-//  | $$                                                            | $$
-//  |__/                                                            |__/
-
-//const powerUp = new PowerUp({ x: 100, y: 100, velocity: { x: 0, y: 0 } });
 
 class PowerUp {
   constructor({ position = { x: 0, y: 0 }, velocity }) {

@@ -10,15 +10,6 @@ const startEl = document.querySelector("#startEl");
 canvas.width = innerWidth;
 canvas.height = innerHeight;
 
-//                             /$$
-//                            | $$
-//    /$$$$$$$  /$$$$$$   /$$$$$$$  /$$$$$$
-//   /$$_____/ /$$__  $$ /$$__  $$ /$$__  $$
-//  | $$      | $$  \ $$| $$  | $$| $$$$$$$$
-//  | $$      | $$  | $$| $$  | $$| $$_____/
-//  |  $$$$$$$|  $$$$$$/|  $$$$$$$|  $$$$$$$
-//   \_______/ \______/  \_______/ \_______/
-//
 //
 //
 //   /$$                         /$$
@@ -57,6 +48,7 @@ let intervalId;
 let powerUps = [];
 let frames = 0;
 let spawnPowerUpsId;
+let backgroundParticles = [];
 
 function init() {
   player = new Player(x, y, 10, "white");
@@ -68,6 +60,20 @@ function init() {
   score = 0;
   scoreEl.innerHTML = score;
   frames = 0;
+  backgroundParticles = [];
+
+  for (let x = 0; x < canvas.width + 60; x += 60) {
+    for (let y = 0; y < canvas.height + 60; y += 60) {
+      backgroundParticles.push(
+        new BackgroundParticle({
+          position: {
+            x,
+            y,
+          },
+        })
+      );
+    }
+  }
 }
 
 function spawnEnemies() {
@@ -114,11 +120,53 @@ function spawnPowerUps() {
   }, 7000);
 }
 
+function createScoreLabel({ position, score }) {
+  const scoreLabel = document.createElement("label");
+  scoreLabel.innerHTML = score;
+  scoreLabel.style.color = "white";
+  scoreLabel.style.position = "absolute";
+  scoreLabel.style.left = position.x + "px";
+  scoreLabel.style.top = position.y + "px";
+  scoreLabel.style.userSelect = "none";
+  document.body.appendChild(scoreLabel);
+
+  gsap.to(scoreLabel, {
+    opacity: 0,
+    y: -30,
+    duration: 0.75,
+    onComplete: () => {
+      scoreLabel.parentNode.removeChild(scoreLabel);
+    },
+  });
+}
+
 function animate() {
   animationId = requestAnimationFrame(animate);
   c.fillStyle = "rgba(0, 0, 0, 0.1)";
   c.fillRect(0, 0, canvas.width, canvas.height);
   frames++;
+
+  //backgroundparticles
+
+  backgroundParticles.forEach((particle) => {
+    particle.draw();
+
+    const dist = Math.hypot(
+      player.x - particle.position.x,
+      player.y - particle.position.y
+    );
+
+    if (dist < 100) {
+      particle.alpha = 0;
+      if (dist > 70) {
+        particle.alpha = 0.5;
+      }
+    } else if (dist > 100 && particle.alpha < 0.1) {
+      particle.alpha += 0.01;
+    } else if (dist > 100 && particle.alpha > 0.1) {
+      particle.alpha -= 0.01;
+    }
+  });
 
   //player
   player.update();
@@ -250,11 +298,36 @@ function animate() {
           gsap.to(enemy, {
             radius: enemy.radius - 10,
           });
+          createScoreLabel({
+            position: {
+              x: projectile.x,
+              y: projectile.y,
+            },
+            score: 100,
+          });
           projectiles.splice(projectileIdx, 1);
         } else {
           score += 150;
           scoreEl.innerHTML = score;
+          createScoreLabel({
+            position: {
+              x: projectile.x,
+              y: projectile.y,
+            },
+            score: 150,
+          });
           //remove enemy if they are too small
+          //change particle color
+          backgroundParticles.forEach((particle) => {
+            gsap.set(particle, {
+              color: "white",
+              alpha: 1,
+            });
+            gsap.to(particle, {
+              color: enemy.color,
+              alpha: 0.1,
+            });
+          });
           enemies.splice(index, 1);
           projectiles.splice(projectileIdx, 1);
         }
