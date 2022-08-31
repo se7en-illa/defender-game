@@ -8,6 +8,8 @@ const start = document.querySelector("#start");
 const startEl = document.querySelector("#startEl");
 const volumeUp = document.querySelector("#volumeUp");
 const volumeOff = document.querySelector("#mute");
+const controls = document.querySelector("#controls");
+const controlButton = document.querySelector("#control");
 
 canvas.width = innerWidth;
 canvas.height = innerHeight;
@@ -268,6 +270,7 @@ function animate() {
       game.active = false;
       cancelAnimationFrame(animationId);
       clearInterval(intervalId);
+      clearInterval(spawnPowerUpsId);
       final.innerHTML = score;
       modalEl.style.display = "block";
       gsap.fromTo(
@@ -435,11 +438,13 @@ const mouse = {
   y: 0,
 };
 
+//powerups
 addEventListener("mousemove", (event) => {
   mouse.x = event.clientX;
   mouse.y = event.clientY;
 });
 
+//restart game button
 restart.addEventListener("click", () => {
   audio.select.play();
   init();
@@ -457,6 +462,14 @@ restart.addEventListener("click", () => {
   });
 });
 
+//controls
+controlButton.addEventListener("click", () => {
+  audio.select.play();
+  startEl.style.display = "none";
+  controls.style.display = "block";
+});
+
+//start button
 start.addEventListener("click", () => {
   audio.select.play();
   init();
@@ -469,11 +482,12 @@ start.addEventListener("click", () => {
     duration: 0.3,
     ease: "expo.in",
     onComplete: () => {
-      startEl.style.display = "none";
+      controls.style.display = "none";
     },
   });
 });
 
+//movement
 window.addEventListener("keydown", (event) => {
   switch (event.key) {
     case "ArrowRight":
@@ -504,6 +518,18 @@ window.addEventListener("keydown", (event) => {
   }
 });
 
+//game pause
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) {
+    clearInterval(intervalId);
+    clearInterval(spawnPowerUpsId);
+  } else {
+    spawnEnemies();
+    spawnPowerUps();
+  }
+});
+
+//resize reset
 window.addEventListener("resize", () => {
   canvas.width = innerWidth;
   canvas.height = innerHeight;
@@ -511,6 +537,7 @@ window.addEventListener("resize", () => {
   init();
 });
 
+// mobile event listeners
 window.addEventListener("touchstart", (event) => {
   const x = event.touches[0].clientX;
   const y = event.touches[0].clientY;
